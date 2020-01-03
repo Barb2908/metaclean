@@ -1,0 +1,106 @@
+
+entity Rol {
+    nombre String
+}
+
+entity Usuario {	
+	login String
+	password String
+    nombre String
+    apellidos String
+    email String
+    inactivo Boolean
+    usuarioCreacion String
+	fechaCreacion LocalDate
+    usuarioEdicion String
+	fechaEdicion LocalDate
+}
+
+
+entity FicheroConfig {
+    servidor String
+    login String
+    password String
+    puerto String
+    usuarioEdicion String
+    fechaEdicion LocalDate
+}
+
+
+entity AuditoriaPeticionPlantilla {
+    grupo String
+    plantilla String
+	fecha LocalDate
+    usuario String
+}
+
+enum TipoPlantilla {
+  E,
+  P
+}
+
+enum AsignacionPlantilla {
+  D,
+  N
+}
+
+entity Metadato {
+  	nombre String
+  	estandar Boolean // Default o custom
+    tipo String // Integer, Float...
+    usuarioCreacion String
+	fechaCreacion LocalDate
+    usuarioEdicion String
+	fechaEdicion LocalDate
+}
+
+entity PlantillaMetadato {
+    valorMetadato String
+    tipoMetadato String //Conservar, sobreescribir, borrar
+    usuarioCreacion String
+	fechaCreacion LocalDate
+    usuarioEdicion String
+	fechaEdicion LocalDate
+}
+
+
+//RESUELTO
+//RESUELTO
+
+
+entity Plantilla {
+    nombrePlantilla String
+    descripcion String
+    tipo TipoPlantilla
+    asignacion AsignacionPlantilla
+    usuarioCreacion String
+	fechaCreacion LocalDate
+    usuarioEdicion String
+	fechaEdicion LocalDate
+}
+
+entity PlantillaGrupo {
+	grupo String
+    usuarioEdicion String
+	fechaEdicion LocalDate
+}
+
+
+// defining multiple OneToMany relationships with comments
+// Usuariocreacion y usuario edicion para las plantillas
+relationship ManyToOne {
+    
+    PlantillaMetadato{metadato} to Metadato,
+    PlantillaMetadato{plantilla} to Plantilla
+    
+    PlantillaGrupo{plantilla} to Plantilla
+    
+}
+
+relationship ManyToMany {
+	Usuario{roles} to Rol{usuarios}
+}
+
+// Set pagination options
+
+paginate * with pagination
